@@ -392,6 +392,21 @@ fun GameScreen(
                             }
                             ToolbarItem(
                                 modifier = Modifier.weight(1f),
+                                painter = painterResource(R.drawable.ic_locked_24),
+                                toggled = viewModel.colorCellButtonToggled,
+                                onClick = {
+                                    viewModel.toolbarClick(ToolBarItem.Color)
+                                },
+                                onLongClick = {
+                                    if (viewModel.gamePlaying) {
+                                        localView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                                        viewModel.toggleColorButton()
+                                    }
+                                }
+                            )
+
+                            ToolbarItem(
+                                modifier = Modifier.weight(1f),
                                 painter = painterResource(R.drawable.ic_eraser_24),
                                 toggled = viewModel.eraseButtonToggled,
                                 onClick = {

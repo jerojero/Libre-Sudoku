@@ -207,6 +207,9 @@ class GameViewModel @Inject constructor(
     // when true, tapping on any cell will clear it
     var eraseButtonToggled by mutableStateOf(false)
 
+    // when true, tapping on a cell will paint it
+    var colorCellButtonToggled by mutableStateOf(false)
+
     // used only in the game-completed section. Not saved anywhere
     var hintsUsed = 0
     var mistakesMade = 0
@@ -341,6 +344,11 @@ class GameViewModel @Inject constructor(
                     if (oldCell.value != 0 && !oldCell.locked) {
                         undoRedoManager.addState(GameState(gameBoard, notes))
                     }
+                } else if (colorCellButtonToggled) {
+                    processColorCell()
+                    if (!currCell.locked) {
+                        undoRedoManager.addState(GameState(gameBoard, notes))
+                    }
                 }
                 remainingUsesList = countRemainingUses(gameBoard)
                 return true
@@ -372,11 +380,20 @@ class GameViewModel @Inject constructor(
                 }
             }
             eraseButtonToggled = false
+            colorCellButtonToggled = false
         }
     }
 
-
-    fun processNumberInput(number: Int) {
+    private fun processColorCell() {
+        // We only want to match cells that contain a value or notes
+        var containsNotes = notes.any {it.row == currCell.row && it.col == currCell.col}
+        if (containsNotes || currCell.value != 0) {
+            if (gamePlaying && !currCell.locked) {
+                setColor(1) // TODO: Change this to a different color
+            }
+        }
+    }
+    private fun processNumberInput(number: Int) {
         if (currCell.row >= 0 && currCell.col >= 0 && gamePlaying && !currCell.locked) {
             if (!notesToggled) {
                 // Clear all note to set a number
@@ -400,6 +417,15 @@ class GameViewModel @Inject constructor(
         } else {
             notesTaken++
             addNote(note.value, note.row, note.col)
+        }
+    }
+
+    private fun setColor(colorCode: Int) {
+        val color = currCell.color
+        if (colorCode == color) { // If it's the same color, we go back to not being painted
+            currCell.color = 0
+        } else {
+            currCell.color = colorCode // Else we paint it
         }
     }
 
@@ -468,6 +494,11 @@ class GameViewModel @Inject constructor(
                 ToolBarItem.Note -> {
                     notesToggled = !notesToggled
                     eraseButtonToggled = false
+                    colorCellButtonToggled = false
+                }
+
+                ToolBarItem.Color -> {
+                    toggleColorButton()
                 }
 
                 ToolBarItem.Remove -> {
@@ -698,6 +729,14 @@ class GameViewModel @Inject constructor(
         currCell = Cell(-1, -1, 0)
         digitFirstNumber = -1
         eraseButtonToggled = !eraseButtonToggled
+        colorCellButtonToggled = false
+    }
+
+    fun toggleColorButton() {
+        colorCellButtonToggled = !colorCellButtonToggled
+        digitFirstNumber = -1
+        notesToggled = false
+        eraseButtonToggled = false
     }
 
     // to make sure that solvedBoard really contains a solved board

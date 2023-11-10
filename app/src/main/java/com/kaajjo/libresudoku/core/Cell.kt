@@ -6,4 +6,5 @@ data class Cell(
     var value: Int = 0,
     var error: Boolean = false,
     var locked: Boolean = false,
+    var color: Int = 0,
 )

@@ -28,6 +28,7 @@ enum class ToolBarItem {
     Hint,
     Note,
     Remove,
+    Color,
     Redo
 }
 
