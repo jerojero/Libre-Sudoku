@@ -55,7 +55,7 @@ class GameViewModel @Inject constructor(
     private val updateBoardUseCase: UpdateBoardUseCase,
     private val getBoardUseCase: GetBoardUseCase,
     themeSettingsManager: ThemeSettingsManager,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val getAllRecordsUseCase: GetAllRecordsUseCase
 ) : ViewModel() {
     init {
@@ -386,7 +386,7 @@ class GameViewModel @Inject constructor(
 
     private fun processColorCell() {
         // We only want to match cells that contain a value or notes
-        var containsNotes = notes.any {it.row == currCell.row && it.col == currCell.col}
+        val containsNotes = notes.any {it.row == currCell.row && it.col == currCell.col}
         if (containsNotes || currCell.value != 0) {
             if (gamePlaying && !currCell.locked) {
                 setColor(1) // TODO: Change this to a different color

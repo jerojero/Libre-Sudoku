@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                             errorColor = BoardColors.errorColor,
                             highlightColor = BoardColors.highlightColor,
                             thickLineColor = BoardColors.thickLineColor,
-                            thinLineColor = BoardColors.thinLineColor
+                            thinLineColor = BoardColors.thinLineColor,
                         )
                     } else {
                         SudokuBoardColorsImpl(
@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                             errorColor = BoardColors.errorColor,
                             highlightColor = MaterialTheme.colorScheme.outline,
                             thickLineColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.55f),
-                            thinLineColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.25f)
+                            thinLineColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.25f),
                         )
                     }
 

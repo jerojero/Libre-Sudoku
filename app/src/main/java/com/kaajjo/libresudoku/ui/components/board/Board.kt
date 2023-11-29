@@ -205,8 +205,12 @@ fun Board(
                     onTap = {
                         if (enabled) {
                             val totalOffset = it / zoom + offset
-                            val row = floor((totalOffset.y) / cellSize).toInt().coerceIn(board.indices)
-                            val column = floor((totalOffset.x) / cellSize).toInt().coerceIn(board.indices)
+                            val row = floor((totalOffset.y) / cellSize)
+                                .toInt()
+                                .coerceIn(board.indices)
+                            val column = floor((totalOffset.x) / cellSize)
+                                .toInt()
+                                .coerceIn(board.indices)
                             onClick(board[row][column])
                         }
                     },
@@ -258,7 +262,6 @@ fun Board(
             modifier = if (zoomable) boardModifier.then(zoomModifier) else boardModifier
         ) {
             if (selectedCell.row >= 0 && selectedCell.col >= 0) {
-                // current cell
                 drawRect(
                     color = highlightColor.copy(alpha = 0.2f),
                     topLeft = Offset(
@@ -321,6 +324,18 @@ fun Board(
                 maxWidth = maxWidth,
                 cornerRadius = CornerRadius(15f, 15f)
             )
+
+            for ( row in board ) {
+                for ( cell in row ) {
+                    if ( cell.color > 0 ) {
+                        drawColoredCell(
+                            cellColor = Color(255, 255, 0).copy(alpha=0.3f),
+                            cell = cell,
+                            cellSize = cellSize
+                        )
+                    }
+                }
+            }
 
             // horizontal line
             for (i in 1 until size) {
@@ -390,6 +405,20 @@ fun Board(
     }
 }
 
+private fun DrawScope.drawColoredCell(
+    cellColor: Color,
+    cell: Cell,
+    cellSize: Float
+){
+    drawRect(
+        color = cellColor,
+        topLeft = Offset(
+            x = cell.col * cellSize,
+            y = cell.row * cellSize
+        ),
+        size = Size(cellSize, cellSize)
+    )
+}
 private fun DrawScope.drawBoardFrame(
     thickLineColor: Color,
     thickLineWidth: Float,
@@ -559,7 +588,7 @@ private fun BoardPreviewLight() {
                     errorColor = BoardColors.errorColor,
                     highlightColor = BoardColors.highlightColor,
                     thickLineColor = BoardColors.thickLineColor,
-                    thinLineColor = BoardColors.thinLineColor
+                    thinLineColor = BoardColors.thinLineColor,
                 )
             )
         }

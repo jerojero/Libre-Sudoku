@@ -74,7 +74,7 @@ class AppColorScheme {
         inverseOnSurface = Color(0xFF1A1C18),
         inverseSurface = Color(0xFFE2E3DD),
         inversePrimary = Color(0xFF1F6D19),
-        surfaceTint = Color(0xFF55944F)
+        surfaceTint = Color(0xFF55944F),
     )
 
     private val pinkLight = lightColorScheme(

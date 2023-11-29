@@ -163,7 +163,7 @@ private fun BoardPreviewPreview() {
                     errorColor = BoardColors.errorColor,
                     highlightColor = BoardColors.highlightColor,
                     thickLineColor = BoardColors.thickLineColor,
-                    thinLineColor = BoardColors.thinLineColor
+                    thinLineColor = BoardColors.thinLineColor,
                 )
             )
         }
