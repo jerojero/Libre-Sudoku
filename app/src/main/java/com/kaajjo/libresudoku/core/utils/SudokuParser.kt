@@ -73,7 +73,6 @@ class SudokuParser {
         val notes = mutableListOf<Note>()
         var i = 0
         while (i < notesString.length) {
-            println(i.toString())
             val index = notesString.indexOf(';', i)
             val toParse = notesString.substring(i..index)
             val row = boardDigitToInt(toParse[0])

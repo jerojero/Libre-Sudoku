@@ -390,20 +390,29 @@ fun GameScreen(
                                 )
 
                             }
-                            ToolbarItem(
-                                modifier = Modifier.weight(1f),
-                                painter = painterResource(R.drawable.ic_locked_24),
-                                toggled = viewModel.colorCellButtonToggled,
-                                onClick = {
-                                    viewModel.toolbarClick(ToolBarItem.Color)
-                                },
-                                onLongClick = {
-                                    if (viewModel.gamePlaying) {
-                                        localView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                                        viewModel.toggleColorButton()
+                            Box (
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                ColoringMenu(
+                                    expanded = viewModel.showColoringMenu,
+                                    onDismiss = { viewModel.showColoringMenu = false },
+                                    onBlueClick = { viewModel.changeSelectedColor(2) },
+                                    onYellowClick = { viewModel.changeSelectedColor(1) },
+                                )
+                                ToolbarItem(
+                                    painter = painterResource(R.drawable.ic_locked_24),
+                                    toggled = viewModel.colorCellButtonToggled,
+                                    onClick = {
+                                        viewModel.toolbarClick(ToolBarItem.Color)
+                                    },
+                                    onLongClick = {
+                                        if (viewModel.gamePlaying) {
+                                            localView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                                            viewModel.showColoringMenu = true
+                                        }
                                     }
-                                }
-                            )
+                                )
+                            }
 
                             ToolbarItem(
                                 modifier = Modifier.weight(1f),
@@ -574,6 +583,40 @@ fun NotesMenu(
                     }
                 },
                 onClick = onRenderNotesClick
+            )
+        }
+    }
+}
+
+@Composable
+fun ColoringMenu(
+    expanded: Boolean,
+    onDismiss: () -> Unit,
+    onYellowClick: () -> Unit,
+    onBlueClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    MaterialTheme(shapes = MaterialTheme.shapes.copy(extraSmall = MaterialTheme.shapes.large)) {
+        DropdownMenu(
+            modifier = modifier,
+            expanded = expanded,
+            onDismissRequest = { onDismiss() }
+        ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.action_select_yellow)) },
+                onClick = {
+                    onYellowClick()
+                    onDismiss()
+                }
+            )
+            DropdownMenuItem(
+                text = {
+                    Text(stringResource(R.string.action_select_blue))
+                },
+                onClick = {
+                    onBlueClick()
+                    onDismiss()
+                }
             )
         }
     }

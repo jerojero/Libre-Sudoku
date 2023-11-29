@@ -132,6 +132,7 @@ class GameViewModel @Inject constructor(
     var showMenu by mutableStateOf(false)
     var showNotesMenu by mutableStateOf(false)
     var showUndoRedoMenu by mutableStateOf(false)
+    var showColoringMenu by mutableStateOf(false)
 
     // count remaining uses
     var remainingUse = appSettingsManager.remainingUse
@@ -209,6 +210,7 @@ class GameViewModel @Inject constructor(
 
     // when true, tapping on a cell will paint it
     var colorCellButtonToggled by mutableStateOf(false)
+    private var selectedColor = 1
 
     // used only in the game-completed section. Not saved anywhere
     var hintsUsed = 0
@@ -389,7 +391,7 @@ class GameViewModel @Inject constructor(
         val containsNotes = notes.any {it.row == currCell.row && it.col == currCell.col}
         if (containsNotes || currCell.value != 0) {
             if (gamePlaying && !currCell.locked) {
-                setColor(1) // TODO: Change this to a different color
+                setColor(selectedColor)
             }
         }
     }
@@ -608,6 +610,10 @@ class GameViewModel @Inject constructor(
             return notes
         }
         return sudokuUtils.autoEraseNotes(board, notes, cell, boardEntity.type)
+    }
+
+    fun changeSelectedColor(colorCode: Int) {
+        selectedColor = colorCode
     }
 
     private suspend fun saveGame() {

@@ -328,8 +328,12 @@ fun Board(
             for ( row in board ) {
                 for ( cell in row ) {
                     if ( cell.color > 0 ) {
+                        var color = Color(255, 255, 0)
+                        if (cell.color == 2) {
+                            color = Color(0, 0, 255)
+                        }
                         drawColoredCell(
-                            cellColor = Color(255, 255, 0).copy(alpha=0.3f),
+                            cellColor = color.copy(alpha=0.1f),
                             cell = cell,
                             cellSize = cellSize
                         )
