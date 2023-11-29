@@ -79,7 +79,7 @@ class SavedGameViewModel
                                 boardEntity.type,
                                 locked = true
                             )
-                        parsedCurrentBoard =
+                        val tempCurrentBoard =
                             sudokuParser.parseBoard(savedGame.currentBoard, boardEntity.type)
                                 .onEach { cells ->
                                     cells.forEach { cell ->
@@ -87,6 +87,11 @@ class SavedGameViewModel
                                             parsedInitialBoard[cell.row][cell.col].value != 0
                                     }
                                 }
+                        parsedCurrentBoard = sudokuParser.parseColoredCells(
+                            savedGame.coloredCells,
+                            tempCurrentBoard,
+                            boardEntity.type
+                        )
                         notes = sudokuParser.parseNotes(savedGame.notes)
                     }
                 }

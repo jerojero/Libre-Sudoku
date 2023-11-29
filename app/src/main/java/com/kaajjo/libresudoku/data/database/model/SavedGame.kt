@@ -26,6 +26,7 @@ data class SavedGame(
     @ColumnInfo(name = "board_uid") val uid: Long,
     @ColumnInfo(name = "current_board") val currentBoard: String,
     @ColumnInfo(name = "notes") val notes: String,
+    @ColumnInfo(name = "colored_cells") val coloredCells: String?,
     @Serializable(with = DurationLongSerializer::class)
     @ColumnInfo(name = "timer") val timer: Duration,
     @ColumnInfo(name = "completed", defaultValue = "false") val completed: Boolean = false,

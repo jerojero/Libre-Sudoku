@@ -11,7 +11,7 @@ class SudokuParser {
         board: String,
         gameType: GameType,
         locked: Boolean = false,
-        emptySeparator: Char? = null
+        emptySeparator: Char? = null,
     ): MutableList<MutableList<Cell>> {
         if (board.isEmpty()) {
             throw BoardParseException(message = "Input string was empty")
@@ -94,6 +94,37 @@ class SudokuParser {
                 "${it.row.toString(radix)},${it.col.toString(radix)},${it.value.toString(radix)};"
         }
         return notesString
+    }
+    fun parseColoredCells(
+        coloredCells: String?,
+        currentBoard: MutableList<MutableList<Cell>>,
+        gameType: GameType,
+    ): MutableList<MutableList<Cell>> {
+        val size = gameType.size
+        if (coloredCells != null) {
+            for (i in coloredCells.indices) {
+                currentBoard[i / size][i % size].color = boardDigitToInt(coloredCells[i])
+            }
+        }
+        return currentBoard
+    }
+
+    fun coloredCellsToString(boardList: List<List<Cell>>): String {
+        var boardString = ""
+        boardList.forEach { cells ->
+            cells.forEach { cell ->
+                boardString += cell.color.toString()
+            }
+        }
+        return boardString
+    }
+
+    fun coloredCellsToString(board: IntArray): String {
+        var boardString = ""
+        board.forEach {
+            boardString += it.toString()
+        }
+        return boardString
     }
 
     private fun boardDigitToInt(char: Char): Int {

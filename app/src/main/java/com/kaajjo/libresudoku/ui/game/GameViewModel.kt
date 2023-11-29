@@ -618,6 +618,7 @@ class GameViewModel @Inject constructor(
                 savedGame.copy(
                     timer = java.time.Duration.ofSeconds(duration.inWholeSeconds),
                     currentBoard = sudokuParser.boardToString(gameBoard),
+                    coloredCells = sudokuParser.coloredCellsToString(gameBoard),
                     notes = sudokuParser.notesToString(notes),
                     mistakes = mistakesCount,
                     lastPlayed = ZonedDateTime.now()
@@ -628,6 +629,7 @@ class GameViewModel @Inject constructor(
                 SavedGame(
                     uid = boardEntity.uid,
                     currentBoard = sudokuParser.boardToString(gameBoard),
+                    coloredCells = sudokuParser.coloredCellsToString(gameBoard),
                     notes = sudokuParser.notesToString(notes),
                     timer = java.time.Duration.ofSeconds(duration.inWholeSeconds),
                     mistakes = mistakesCount,
@@ -646,10 +648,14 @@ class GameViewModel @Inject constructor(
 
             mistakesCount = savedGame.mistakes
             val sudokuParser = SudokuParser()
-            gameBoard = sudokuParser.parseBoard(
-                savedGame.currentBoard,
+            gameBoard = sudokuParser.parseColoredCells(
+                savedGame.coloredCells,
+                sudokuParser.parseBoard(
+                    savedGame.currentBoard,
+                    boardEntity.type
+                ),
                 boardEntity.type
-            )
+                )
             notes = sudokuParser.parseNotes(savedGame.notes)
 
             for (i in gameBoard.indices) {
@@ -686,6 +692,7 @@ class GameViewModel @Inject constructor(
                     savedGame.copy(
                         timer = java.time.Duration.ofSeconds(duration.inWholeSeconds),
                         currentBoard = sudokuParser.boardToString(gameBoard),
+                        coloredCells = sudokuParser.coloredCellsToString(gameBoard),
                         completed = true,
                         giveUp = true,
                         mistakes = mistakesCount,
